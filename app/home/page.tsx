@@ -65,27 +65,28 @@ export default function HomePage() {
       <PageBackground variant="faded" image="/main-bg.jpg" />
 
       {/* logo pojok kiri atas */}
-      <div className="absolute top-6 left-8 z-20 flex items-center gap-2.5">
-        <Sparkles size={30} className="text-[#D98BA0]" />
+      <div className="absolute top-4 left-4 sm:top-6 sm:left-8 z-20 flex items-center gap-1.5 sm:gap-2.5">
+        <Sparkles size={22} className="text-[#D98BA0] sm:hidden" />
+        <Sparkles size={30} className="text-[#D98BA0] hidden sm:block" />
         <span
           style={{ fontFamily: "'Fredoka', sans-serif" }}
-          className="text-3xl font-semibold text-[#332920]"
+          className="text-lg sm:text-3xl font-semibold text-[#332920]"
         >
           ScriptCraft
         </span>
       </div>
 
       {/* akun + logout pojok kanan atas */}
-      <div className="absolute top-6 right-6 z-20">
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
         <div className="relative">
           <button
             onClick={() => setMenuOpen((v) => !v)}
-            className="flex items-center gap-2 bg-white rounded-full pl-2 pr-4 py-2 shadow-sm border border-[#332920]/10 hover:shadow-md transition-shadow"
+            className="flex items-center gap-1.5 sm:gap-2 bg-white rounded-full pl-1.5 sm:pl-2 pr-2.5 sm:pr-4 py-1.5 sm:py-2 shadow-sm border border-[#332920]/10 hover:shadow-md transition-shadow"
           >
-            <div className="w-7 h-7 rounded-full bg-[#D98BA0]/20 flex items-center justify-center text-xs font-medium text-[#D98BA0]">
+            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#D98BA0]/20 flex items-center justify-center text-[10px] sm:text-xs font-medium text-[#D98BA0]">
               {email.charAt(0).toUpperCase()}
             </div>
-            <span className="text-xs text-[#332920]/70 max-w-[120px] truncate">{email}</span>
+            <span className="hidden sm:inline text-xs text-[#332920]/70 max-w-[120px] truncate">{email}</span>
           </button>
 
           {menuOpen && (
@@ -101,7 +102,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6">
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 pt-16 sm:pt-0">
         <h1
           style={{ fontFamily: "'Fredoka', sans-serif" }}
           className="text-[88px] leading-none font-semibold text-[#332920] mb-8 text-center"
