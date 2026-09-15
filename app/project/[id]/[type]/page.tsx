@@ -4,10 +4,10 @@ import { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { PageBackground } from '@/components/PageBackground'
-import { ArrowLeft, Video, Newspaper, Link2, FileText, Upload, Gauge, MessageCircle, Send } from 'lucide-react'
+import { ArrowLeft, Lightbulb, Newspaper, FileText, Upload, Gauge, MessageCircle, Send } from 'lucide-react'
 
 const TABS = [
-  { id: 'youtube', label: 'YouTube Link', icon: Video },
+  { id: 'topic', label: 'Quick Topic', icon: Lightbulb },
   { id: 'news', label: 'News Text', icon: Newspaper },
   { id: 'pdf', label: 'PDF Document', icon: FileText },
   { id: 'chat', label: 'AI Chat', icon: MessageCircle },
@@ -22,7 +22,7 @@ export default function ModePage() {
   const type = params.type as string
   const accent = type === 'speech' ? '#D98BA0' : '#8FA382'
 
-  const [tab, setTab] = useState('youtube')
+  const [tab, setTab] = useState('topic')
   const [input, setInput] = useState('')
   const [pdfFileName, setPdfFileName] = useState('')
   const [pdfLoading, setPdfLoading] = useState(false)
@@ -171,20 +171,17 @@ export default function ModePage() {
         </div>
 
         <div className="bg-white rounded-3xl border border-[#332920]/8 p-8">
-          {tab === 'youtube' && (
+          {tab === 'topic' && (
             <div className="mb-6">
               <label className="block text-sm font-medium text-[#332920]/70 mb-3">
-                Paste a video link — we'll pull the transcript and turn it into a script.
+                Type a topic — AI will research it and write the script for you.
               </label>
-              <div className="flex items-center gap-3 border border-[#332920]/15 rounded-2xl px-4 py-4">
-                <Link2 size={20} className="text-[#332920]/40 shrink-0" />
-                <input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="https://youtube.com/watch?v=..."
-                  className="flex-1 outline-none text-base"
-                />
-              </div>
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="e.g. the impact of plastic waste on oceans"
+                className="w-full border border-[#332920]/15 rounded-2xl px-4 py-4 text-base outline-none"
+              />
             </div>
           )}
 
