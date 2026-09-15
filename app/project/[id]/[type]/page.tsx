@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { PageBackground } from '@/components/PageBackground'
-import { ArrowLeft, Lightbulb, Newspaper, FileText, Upload, Gauge, MessageCircle, Send } from 'lucide-react'
+import { ArrowLeft, Lightbulb, Newspaper, FileText, Upload, Gauge, MessageCircle, Send, Clock } from 'lucide-react'
 
 const TABS = [
   { id: 'topic', label: 'Quick Topic', icon: Lightbulb },
@@ -15,6 +15,7 @@ const TABS = [
 ]
 
 type ChatMsg = { role: 'user' | 'assistant'; content: string }
+type ScriptRow = { id: string; source_type: string; source_input: string; content: string; created_at: string }
 
 export default function ModePage() {
   const router = useRouter()
@@ -38,6 +39,32 @@ export default function ModePage() {
   ])
   const [chatInput, setChatInput] = useState('')
   const [chatLoading, setChatLoading] = useState(false)
+
+  const [history, setHistory] = useState<ScriptRow[]>([])
+  const [viewingHistoryId, setViewingHistoryId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const loadHistory = async () => {
+      const { data } = await supabase
+        .from('scripts')
+        .select('id, source_type, source_input, content, created_at')
+        .eq('folder_id', params.id)
+        .eq('type', type)
+        .order('created_at', { ascending: false })
+      setHistory(data || [])
+    }
+    loadHistory()
+  }, [params.id, type])
+
+  const refreshHistory = async () => {
+    const { data } = await supabase
+      .from('scripts')
+      .select('id, source_type, source_input, content, created_at')
+      .eq('folder_id', params.id)
+      .eq('type', type)
+      .order('created_at', { ascending: false })
+    setHistory(data || [])
+  }
 
   const handlePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -91,6 +118,7 @@ export default function ModePage() {
       content: data.content,
     })
     setLoading(false)
+    refreshHistory()
   }
 
   const checkDifficulty = async () => {
@@ -130,6 +158,7 @@ export default function ModePage() {
       source_input: 'AI Chat conversation',
       content,
     })
+    refreshHistory()
   }
 
   return (
@@ -332,6 +361,45 @@ export default function ModePage() {
             </div>
           )}
         </div>
+
+        {history.length > 0 && (
+          <div className="mt-10">
+            <div className="flex items-center gap-2 mb-4">
+              <Clock size={18} className="text-[#332920]/40" />
+              <p className="text-sm font-medium text-[#332920]/60">Previous scripts in this folder</p>
+            </div>
+            <div className="space-y-2">
+              {history.map((h) => (
+                <div key={h.id} className="bg-white rounded-2xl border border-[#332920]/8 overflow-hidden">
+                  <button
+                    onClick={() => setViewingHistoryId(viewingHistoryId === h.id ? null : h.id)}
+                    className="w-full flex items-center justify-between px-5 py-3.5 text-left hover:bg-[#FBF4EC]/50 transition-colors"
+                  >
+                    <div className="min-w-0">
+                      <span
+                        style={{ background: accent }}
+                        className="inline-block text-white text-[10px] font-medium uppercase rounded-full px-2.5 py-1 mr-2 align-middle"
+                      >
+                        {h.source_type}
+                      </span>
+                      <span className="text-sm text-[#332920]/70 truncate align-middle">
+                        {h.source_input?.slice(0, 60) || 'AI Chat conversation'}
+                      </span>
+                    </div>
+                    <span className="text-xs text-[#332920]/35 shrink-0 ml-3">
+                      {new Date(h.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+                    </span>
+                  </button>
+                  {viewingHistoryId === h.id && (
+                    <div className="px-5 pb-5 whitespace-pre-wrap text-sm leading-relaxed text-[#332920]/75 border-t border-[#332920]/8 pt-4">
+                      {h.content}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

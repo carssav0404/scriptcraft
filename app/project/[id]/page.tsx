@@ -48,7 +48,7 @@ export default function ProjectPage() {
               <Mic size={20} className="text-[#D98BA0]" />
             </div>
             <h3 className="font-semibold text-base mb-1">Speech</h3>
-            <p className="text-xs text-[#332920]/50 leading-relaxed">A ready-to-deliver speech script.</p>
+            <p className="text-xs text-[#332920]/50 leading-relaxed">A ready to deliver speech script.</p>
           </button>
 
           <button
@@ -59,7 +59,7 @@ export default function ProjectPage() {
               <MonitorPlay size={20} className="text-[#8FA382]" />
             </div>
             <h3 className="font-semibold text-base mb-1">Presentation Script</h3>
-            <p className="text-xs text-[#332920]/50 leading-relaxed">A slide-by-slide script.</p>
+            <p className="text-xs text-[#332920]/50 leading-relaxed">A slide by slide script.</p>
           </button>
         </div>
       </div>
