@@ -37,11 +37,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 # ScriptCraft
 
-Turn any source — a YouTube video, a news article, a PDF document, or a free-form chat — into a ready-to-deliver **speech** or **presentation script**, powered by AI.
+Turn any source — a quick topic, a news article, a PDF document, or a free-form chat — into a ready-to-deliver **speech** or **presentation script**, powered by AI.
 
 ## The Problem
 
-Preparing a speech or presentation from existing material (a video, an article, a document) takes time: watching/reading, pulling out the key points, and restructuring everything into something you can actually stand up and say out loud. Most people either skip the structuring step (and ramble) or spend hours doing it manually.
+Preparing a speech or presentation from existing material takes time: researching, pulling out the key points, and restructuring everything into something you can actually stand up and say out loud. Most people either skip the structuring step (and ramble) or spend hours doing it manually.
 
 ## The Solution
 
@@ -51,27 +51,27 @@ ScriptCraft lets you pick a source, and generates a properly structured script f
 - **Presentation mode** — slide-by-slide breakdown with a headline and speaker notes per slide.
 
 Sources supported:
-- **YouTube link** — automatically fetches the video's transcript
-- **News text** — paste any article text
-- **PDF document** — upload a PDF and its text is extracted automatically
+- **Quick Topic** — type any topic, AI researches it and writes the script from scratch
+- **News Text** — paste any article text
+- **PDF Document** — upload a PDF and its text is extracted automatically
 - **AI Chat** — freeform conversation to draft or revise a script exactly how you want it
 - **Check Level** — analyze how easy or hard a topic is for the average student
 
-Every folder acts as a project/topic, and all generated scripts are saved to your history so you can pick up where you left off.
+Every folder acts as a project, and all generated scripts are saved to that folder's history, so you can pick up where you left off — even across different source types.
 
 ## Tech Stack
 
 - **Frontend & Backend:** Next.js (App Router, TypeScript, Tailwind CSS)
 - **Auth & Database:** Supabase (Google OAuth, Postgres, Row Level Security)
 - **AI:** Groq API (Llama-based model) for script generation, difficulty analysis, and chat
-- **Other:** `youtube-transcript` for video transcripts, `pdf-parse` for PDF text extraction
+- **Other:** `pdf-parse` for PDF text extraction
 
 ## How It Works
 
 1. Sign in with Google
 2. Create a folder for your topic/project
 3. Choose **Speech** or **Presentation Script**
-4. Pick a source (YouTube, News, PDF, or Chat)
+4. Pick a source (Quick Topic, News, PDF, or Chat)
 5. Get your generated script instantly, saved to your folder's history
 
 ## Getting Started (local development)
@@ -94,7 +94,7 @@ npm run dev
 
 ## Live Demo
 
-- **Live URL:** _(add after deploying to Vercel)_
+- **Live URL:** https://scriptcraft-cyan.vercel.app
 - **GitHub:** https://github.com/carssav0404/scriptcraft
 
 ## Author
