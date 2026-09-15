@@ -49,19 +49,17 @@ export default function ModePage() {
         .from('scripts')
         .select('id, source_type, source_input, content, created_at')
         .eq('folder_id', params.id)
-        .eq('type', type)
         .order('created_at', { ascending: false })
       setHistory(data || [])
     }
     loadHistory()
-  }, [params.id, type])
+  }, [params.id])
 
   const refreshHistory = async () => {
     const { data } = await supabase
       .from('scripts')
       .select('id, source_type, source_input, content, created_at')
       .eq('folder_id', params.id)
-      .eq('type', type)
       .order('created_at', { ascending: false })
     setHistory(data || [])
   }
@@ -131,12 +129,22 @@ export default function ModePage() {
     const data = await res.json()
     setDifficultyResult(data)
     setDifficultyLoading(false)
+
+    await supabase.from('scripts').insert({
+      folder_id: params.id,
+      type,
+      source_type: 'difficulty',
+      source_input: input,
+      content: `Level: ${data.level}\n\n${data.note}`,
+    })
+    refreshHistory()
   }
 
   const sendChat = async () => {
     if (!chatInput.trim()) return
     const newMessages: ChatMsg[] = [...chatMessages, { role: 'user', content: chatInput }]
     setChatMessages(newMessages)
+    const askedTopic = chatInput
     setChatInput('')
     setChatLoading(true)
 
@@ -148,6 +156,16 @@ export default function ModePage() {
     const updated: ChatMsg[] = [...newMessages, { role: 'assistant', content: data.content }]
     setChatMessages(updated)
     setChatLoading(false)
+
+    // auto-save tiap balasan AI ke history, sama kayak fitur lain
+    await supabase.from('scripts').insert({
+      folder_id: params.id,
+      type,
+      source_type: 'chat',
+      source_input: askedTopic,
+      content: data.content,
+    })
+    refreshHistory()
   }
 
   const saveChatMessage = async (content: string) => {
@@ -274,14 +292,6 @@ export default function ModePage() {
                         >
                           {m.content}
                         </div>
-                        {m.role === 'assistant' && i > 0 && (
-                          <button
-                            onClick={() => saveChatMessage(m.content)}
-                            className="text-xs text-[#332920]/40 mt-1 hover:text-[#332920]/70"
-                          >
-                            Save this as a script
-                          </button>
-                        )}
                       </div>
                     </div>
                   ))}
